@@ -1,12 +1,12 @@
 package com.sdev450_finalproject.persistance.Album;
 
+import com.sdev450_finalproject.persistance.Track.TrackEntity;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -15,40 +15,24 @@ import java.io.Serializable;
 public class AlbumEntity implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy= GenerationType.AUTO)
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
 
 
     private String id;
     private String albumName;
-    private String artist;
     private String Genre;
-    
-    //Trinh: changed albumTracks to array 
-    //Trinh: also changed getter and setters. Original albumTracks is a String. 
-    private String[] albumTracks;
-    private String trackTitle;
-    private String trackLength;
 
-    public String getTrackTitle() {
-        return trackTitle;
+
+    @OneToMany(targetEntity = TrackEntity.class, cascade = CascadeType.ALL)
+    private List<TrackEntity> tracks;
+
+    public void addTrack(TrackEntity track) {
+        if(tracks == null) {
+            this.tracks = new ArrayList<>();
+        }
+        this.tracks.add(track);
     }
-
-    public void setTrackTitle(String trackTitle) {
-        this.trackTitle = trackTitle;
-    }
-
-
-
-    public String[] getAlbumTracks() {
-        return albumTracks;
-    }
-
-    public void setAlbumTracks(String[] albumTracks) {
-        this.albumTracks = albumTracks;
-    }
-
 
 
     public String getGenre() {
@@ -67,13 +51,6 @@ public class AlbumEntity implements Serializable {
         this.id = id;
     }
 
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
 
 
     public String getAlbumName() {
@@ -85,14 +62,20 @@ public class AlbumEntity implements Serializable {
     }
 
 
-    @Override
-    public String toString() {
-        return "AlbumEntity [id=" + id + ", Album Name=" + albumName + ", artist=" + artist
-                + ", Genre=" + Genre + "Tracks: " + albumTracks + "]";
+    public List<TrackEntity> getTracks() {
+        return tracks;
     }
 
-    public String TracklisttoString() {
-        return "TrackEntity [Title=" + trackTitle +  ", trackLength=" + trackLength +  "]";
+    public void setTracks(List<TrackEntity> tracks) {
+        this.tracks = tracks;
     }
+
+    @Override
+    public String toString() {
+        return "AlbumEntity [id=" + id + System.lineSeparator() +", Album Name=" + albumName + ", Genre=" + Genre +  "]";
+    }
+
+
+
 
 } //End of Class

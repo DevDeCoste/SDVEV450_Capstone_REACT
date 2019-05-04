@@ -1,4 +1,4 @@
-package com.sdev450_finalproject.persistance;
+package com.sdev450_finalproject.persistance.User;
 
  import org.springframework.data.jpa.repository.JpaRepository;
 
